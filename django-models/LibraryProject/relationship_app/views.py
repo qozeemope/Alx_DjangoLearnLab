@@ -20,7 +20,6 @@ class LibraryDetailView(DetailView):
     context_object_name = "library"
 
 
-
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
