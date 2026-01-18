@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import user_passes_test, permission_required
 from .models import Book, Library, UserProfile
-from .models import Book
+
 
 
 def list_books(request):
