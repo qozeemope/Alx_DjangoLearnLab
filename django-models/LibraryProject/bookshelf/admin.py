@@ -14,5 +14,5 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ('publication_year', 'author')            # sidebar filters
     search_fields = ('title', 'author')                     # search box
 
-admin.site.register(Book, BookAdmin)
+# admin.site.register(Book, BookAdmin)
 
