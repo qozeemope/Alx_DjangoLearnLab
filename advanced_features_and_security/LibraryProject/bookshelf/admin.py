@@ -1,8 +1,7 @@
 from django.contrib import admin
-
-# Register your models here.
-
 from .models import Book
+from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser
 
 admin.site.register(Book)
 
@@ -17,3 +16,11 @@ class BookAdmin(admin.ModelAdmin):
 # admin.site.register(Book, BookAdmin)
 
 
+
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    fieldsets = UserAdmin.fieldsets + (
+        ("Additional Info", {"fields": ("date_of_birth", "profile_photo")}),
+    )
+
+admin.site.register(CustomUser, CustomUserAdmin)
