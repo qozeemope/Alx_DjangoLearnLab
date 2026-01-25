@@ -86,3 +86,5 @@ SECURE_HSTS_PRELOAD = True
 
 # CSP (requires django-csp)
 # CSP_DEFAULT_SRC = ("'self'",)
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
