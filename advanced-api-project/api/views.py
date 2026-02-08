@@ -15,6 +15,10 @@ class BookListView(generics.ListAPIView):
         rest_framework.filters.OrderingFilter,
     ]
 
+    filterset_fields = ["title", "author", "publication_year"]
+    search_fields = ["title", "author"]
+    ordering_fields = ["title", "publication_year"]
+
 
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
