@@ -1,30 +1,42 @@
 ## Blog Post Management Features
 
-### Overview
-The blog application supports full CRUD (Create, Read, Update, Delete) operations for blog posts. These features are implemented using Django’s class-based generic views together with ModelForms to ensure structured validation and secure data handling.
+The blog supports full CRUD operations for posts using Django class-based views and ModelForms.
+
+- **Create:** Authenticated users can create posts. The system automatically assigns the logged-in user as the author and redirects to the post detail page after submission.
+- **Read:** All users can view the post list and individual post pages. Posts are ordered by newest first.
+- **Update:** Only the post author can edit a post. Access is enforced using authentication and ownership checks.
+- **Delete:** Only the author can delete their post. Unauthorized users are blocked by backend permission rules.
 
 ---
 
-### Create Post
-Authenticated users can create new blog posts using a form interface.  
-The backend automatically assigns the logged-in user as the post author, ensuring that users cannot create posts on behalf of others.
+## Comment System
 
-After a successful submission, the system redirects to the post’s detail page using the model’s `get_absolute_url()` method.
+The application includes a comment feature that allows discussion on posts.
 
----
-
-### Read Posts
-All visitors, including anonymous users, can:
-- View the list of all blog posts
-- Open individual post detail pages
-
-Posts are displayed in reverse chronological order based on their publication date.
+- **Create:** Logged-in users can add comments from the post detail page. The backend links each comment to the current user and post automatically.
+- **Display:** Comments appear on the post page in chronological order with author and timestamp.
+- **Update/Delete:** Only the comment author can edit or remove their comment.
+- **Security:** Authentication checks, ownership validation, CSRF protection, and database relationships ensure secure comment handling.
 
 ---
 
-### Update Post
-Only the original author of a post is allowed to edit it.
+## Tagging and Search Features
 
-This restriction is enforced using:
-- `LoginRequiredMixin` to ensure the user is authenticated
-- `UserPassesTestMixin` t
+Tagging and search improve content organization and discoverability.
+
+### Tagging
+- Posts can include multiple tags entered as comma-separated values.
+- Tags are stored as reusable database objects and linked to posts.
+- Clicking a tag shows all posts associated with it.
+
+### Search
+- Users can search posts using a keyword.
+- The system searches:
+  - post titles  
+  - post content  
+  - tag names  
+- Results are displayed on a dedicated search results page.
+
+---
+
+These features enhance usability by allowing users to organize posts, explore related content, and quickly find information.

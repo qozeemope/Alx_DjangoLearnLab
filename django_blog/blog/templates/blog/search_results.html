@@ -1,13 +1,8 @@
-<!-- blog/templates/blog/post_list.html -->
 {% extends "blog/base.html" %}
-{% block title %}Posts{% endblock %}
+{% block title %}Search{% endblock %}
 
 {% block content %}
-  <h2>Blog Posts</h2>
-
-  {% if user.is_authenticated %}
-    <p><a href="{% url 'post_create' %}">Create New Post</a></p>
-  {% endif %}
+  <h2>Search Results for "{{ query }}"</h2>
 
   {% for post in posts %}
     <article>
@@ -27,6 +22,8 @@
     </article>
     <hr>
   {% empty %}
-    <p>No posts yet.</p>
+    <p>No posts found.</p>
   {% endfor %}
+
+  <p><a href="{% url 'post_list' %}">Back to posts</a></p>
 {% endblock %}
