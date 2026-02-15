@@ -24,8 +24,8 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ("title", "content", "tags")
         widgets = {
-            "tags": TagWidget(),   # ✅ REQUIRED FOR ALX CHECKER
-        }
+            "tags": TagWidget(), 
+              }
 
 
 class CommentForm(forms.ModelForm):
