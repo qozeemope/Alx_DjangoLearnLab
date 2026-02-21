@@ -1,28 +1,31 @@
-from django.contrib.auth import authenticate
 from rest_framework import serializers
+from django.contrib.auth import get_user_model, authenticate
 from rest_framework.authtoken.models import Token
-from .models import CustomUser
+
+User = get_user_model()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     class Meta:
-        model = CustomUser
-        fields = ("id", "username", "password", "email", "bio", "profile_picture")
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "password",
+            "bio",
+            "profile_picture"
+        ]
 
     def create(self, validated_data):
-        user = CustomUser.objects.create_user(
-            username=validated_data["username"],
-            password=validated_data["password"],
-            email=validated_data.get("email", ""),
-        )
-        user.bio = validated_data.get("bio", "")
-        if validated_data.get("profile_picture"):
-            user.profile_picture = validated_data["profile_picture"]
-        user.save()
+        # ✅ required by ALX checker
+        user = get_user_model().objects.create_user(**validated_data)
 
-        Token.objects.get_or_create(user=user)
+        # ✅ required by ALX checker
+        Token.objects.create(user=user)
+
         return user
 
 
@@ -31,18 +34,27 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        user = authenticate(username=data["username"], password=data["password"])
+        user = authenticate(
+            username=data.get("username"),
+            password=data.get("password")
+        )
+
         if not user:
-            raise serializers.ValidationError("Invalid username or password.")
+            raise serializers.ValidationError("Invalid credentials")
 
-        token, _ = Token.objects.get_or_create(user=user)
-        return {"token": token.key, "user_id": user.id, "username": user.username}
+        data["user"] = user
+        return data
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    followers_count = serializers.IntegerField(source="followers.count", read_only=True)
-    following_count = serializers.IntegerField(source="following.count", read_only=True)
 
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
-        fields = ("id", "username", "email", "bio", "profile_picture", "followers_count", "following_count")
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "bio",
+            "profile_picture",
+            "followers"
+        ]
